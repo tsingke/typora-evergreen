@@ -1,0 +1,921 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Typora Evergreen — macOS 中英混排 × 深绿主题
+   ═══════════════════════════════════════════════════════════════════════
+   基于 Obsidian 主题合并版适配，专为 Typora 打造。
+
+   设计原则:
+   - 字体: Avenir Next (英文) + PingFang SC (中文正文) + Heiti SC (中文标题)
+   - 颜色: 深绿 #1a7a6a 为主色，金色 #f2c94c 为点缀
+   - 模式: Light / Dark (跟随系统)
+   - 打印: 衬线字体
+
+   使用方法:
+   1. Typora → 偏好设置 → 外观 → 打开主题文件夹
+   2. 将本文件放入，重启 Typora
+   3. 菜单 → 主题 → 选择 "Typora Evergreen"
+   ═══════════════════════════════════════════════════════════════════════ */
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第一部分: Typora CSS 变量 + 字体/颜色变量
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* --- Typora 标准主题变量 --- */
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --md-char-color: #c7c5c5;
+  --meta-content-color: #5b808d;
+  --primary-color: #1a7a6a;
+  --primary-btn-border-color: #0d5c4a;
+  --primary-btn-text-color: #ffffff;
+  --window-border: 1px solid #e0e6e3;
+  --active-file-bg-color: #eaf5f2;
+  --active-file-text-color: inherit;
+  --active-file-border-color: #1a7a6a;
+  --side-bar-bg-color: #f8fbfa;
+  --item-hover-bg-color: rgba(26, 122, 106, 0.08);
+  --item-hover-text-color: inherit;
+  --monospace: "SF Mono", "Cascadia Code", "Menlo", "Monaco", "Consolas", "Courier New", monospace;
+
+  /* --- 自定义字体变量 --- */
+  --font-heading: "Avenir Next", "Avenir", "Heiti SC", "PingFang SC Semibold", "STHeiti", "Microsoft YaHei", sans-serif;
+  --font-body: "Avenir Next", "Avenir", "PingFang SC", -apple-system, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", sans-serif;
+
+  /* --- 代码高亮 (Light) --- */
+  --code-background: #f5f7f9;
+  --code-normal: #333333;
+  --code-comment: #6a8a6a;
+  --code-keyword: #1a5a9a;
+  --code-string: #8a3a0a;
+  --code-function: #5a3a8a;
+  --code-tag: #8a2a5a;
+  --code-property: #8a2a5a;
+  --code-punctuation: #555555;
+  --code-operator: #3a4a3a;
+  --code-value: #1a6a4a;
+  --code-important: #c7254e;
+
+  /* --- 侧边栏颜色变量 --- */
+  --side-bar-bg-color: #f8fbfa;
+  --side-bar-text-color: #333333;
+  --outline-item-hover: rgba(26, 122, 106, 0.08);
+  --outline-item-active: #1a7a6a;
+  --search-select-bg-color: #eaf5f2;
+  --search-select-text-color: #333333;
+}
+
+/* =============================== */
+/*  Dark Mode 变量覆盖            */
+/* =============================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #1a1a1e;
+    --text-color: #d0d0d0;
+    --md-char-color: #555555;
+    --meta-content-color: #8aba9a;
+    --window-border: 1px solid #333333;
+    --active-file-bg-color: #1a2f2a;
+    --active-file-text-color: inherit;
+    --active-file-border-color: #4db89a;
+    --side-bar-bg-color: #1e1e22;
+    --item-hover-bg-color: rgba(77, 184, 154, 0.1);
+    --item-hover-text-color: inherit;
+
+    /* 代码高亮 (Dark) */
+    --code-background: #1a1f23;
+    --code-normal: #d0d0d0;
+    --code-comment: #7aaa7a;
+    --code-keyword: #6ab0f0;
+    --code-string: #d08a5a;
+    --code-function: #b08ae0;
+    --code-tag: #e090b0;
+    --code-property: #e090b0;
+    --code-punctuation: #aaaaaa;
+    --code-operator: #9aaa8a;
+    --code-value: #7ac08a;
+    --code-important: #e89191;
+
+    --side-bar-bg-color: #1e1e22;
+    --side-bar-text-color: #d0d0d0;
+    --outline-item-hover: rgba(77, 184, 154, 0.1);
+    --outline-item-active: #4db89a;
+    --search-select-bg-color: #1a2f2a;
+    --search-select-text-color: #d0d0d0;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第二部分: 全局基础样式
+   ═══════════════════════════════════════════════════════════════════════ */
+
+html {
+  font-size: 15px;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+
+/* =============================== */
+/*  写作区域                        */
+/* =============================== */
+#write {
+  max-width: 800px;
+  font-size: 1rem;
+  color: var(--text-color);
+  padding: 30px 40px 60px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第三部分: 标题样式
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* H1 — 深绿背景 + 白字 + 金色左侧竖线 */
+#write h1 {
+  font-family: var(--font-heading);
+  background-color: #1a7a6a;
+  color: #ffffff;
+  padding: 8px 14px;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+  font-size: 1.25em;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+#write h1::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+  background-color: #f2c94c;
+}
+
+/* H2 — 深绿文字 + 金色下划线 */
+#write h2 {
+  font-family: var(--font-heading);
+  color: #1a7a6a;
+  font-weight: bold;
+  padding-bottom: 4px;
+  margin-top: 1.8em;
+  margin-bottom: 1em;
+  font-size: 1.2em;
+  border-bottom: none;
+  position: relative;
+}
+#write h2::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #f2c94c;
+}
+
+/* H3 - H6 — 绿色渐变色阶 */
+#write h3 {
+  font-family: var(--font-heading);
+  color: #2d8a6e;
+  font-weight: bold;
+  margin-top: 1.4em;
+  margin-bottom: 0.6em;
+  font-size: 1.1em;
+}
+#write h4 {
+  font-family: var(--font-heading);
+  color: #3d9a78;
+  font-weight: bold;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  font-size: 1.05em;
+}
+#write h5 {
+  font-family: var(--font-heading);
+  color: #50aa88;
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 0.4em;
+  font-size: 1em;
+}
+#write h6 {
+  font-family: var(--font-heading);
+  color: #6aba9c;
+  font-weight: bold;
+  margin-top: 0.8em;
+  margin-bottom: 0.3em;
+  font-size: 0.95em;
+}
+
+/* Dark 模式标题颜色微调 */
+@media (prefers-color-scheme: dark) {
+  #write h1 {
+    background-color: #1a7a6a;
+    color: #f0f0f0;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  }
+  #write h2 { color: #4db89a; }
+  #write h3 { color: #63c8aa; }
+  #write h4 { color: #7dd8ba; }
+  #write h5 { color: #98e5cc; }
+  #write h6 { color: #b0f0e0; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第四部分: 正文与行内样式
+   ═══════════════════════════════════════════════════════════════════════ */
+
+#write p {
+  line-height: 1.75;
+  margin: 0.6em 0;
+}
+
+#write strong {
+  color: #0d5c4a;
+  font-weight: 700;
+}
+
+#write em {
+  color: #1a7a6a;
+}
+
+#write u {
+  color: #1a7a6a;
+  text-decoration: underline solid #1a7a6a;
+  text-underline-offset: 2px;
+}
+
+#write del {
+  color: #1a7a6a;
+}
+
+#write a {
+  color: #1a7a6a;
+  text-decoration: underline dotted #1a7a6a;
+}
+
+#write a img {
+  width: 1em;
+  height: 1em;
+  vertical-align: text-bottom;
+  display: inline-block;
+}
+
+#write mark {
+  background-color: #f2c94c;
+  color: #1a1a1a;
+  padding: 0 2px;
+}
+
+/* Dark 模式行内样式 */
+@media (prefers-color-scheme: dark) {
+  #write p { color: #d0d0d0; }
+  #write strong { color: #5fdbb0; }
+  #write em { color: #7dd8ba; }
+  #write u { color: #7dd8ba; text-decoration-color: #7dd8ba; }
+  #write del { color: #7dd8ba; }
+  #write a { color: #5fdbb0; }
+}
+
+
+/* =============================== */
+/*  行内代码                        */
+/* =============================== */
+#write code {
+  font-family: var(--monospace);
+  background-color: #edf2f0;
+  color: #c7254e;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.9em;
+  border: 1px solid #dde4e2;
+}
+
+@media (prefers-color-scheme: dark) {
+  #write code {
+    background-color: #2d2d2d;
+    color: #e89191;
+    border-color: #444444;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第五部分: 引用块
+   ═══════════════════════════════════════════════════════════════════════ */
+
+#write blockquote {
+  background: #f8fafa;
+  border-left: 4px solid #1a7a6a;
+  border-radius: 0 4px 4px 0;
+  padding: 0.6em 1em 0.6em 1.2em;
+  margin: 0.7em 0;
+  color: #444444;
+  line-height: 1.6;
+  font-size: 0.95em;
+}
+#write blockquote > p {
+  margin: 0.4em 0;
+}
+#write blockquote > p:first-child {
+  margin-top: 0;
+}
+#write blockquote > p:last-child {
+  margin-bottom: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  #write blockquote {
+    background: #1a1f1e;
+    border-left-color: #1a7a6a;
+    color: #c0c0c0;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第六部分: 列表
+   ═══════════════════════════════════════════════════════════════════════ */
+
+#write ul,
+#write ol {
+  line-height: 1.7;
+  padding-left: 1.8em;
+}
+#write li {
+  margin: 0.3em 0;
+}
+#write li > p {
+  margin: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第七部分: 表格
+   ═══════════════════════════════════════════════════════════════════════ */
+
+#write table {
+  width: 100%;
+  max-width: 100%;
+  margin: 1.4em 0;
+  border-collapse: collapse;
+  border: 1px solid #cccccc;
+  background: #ffffff;
+  font-size: 0.95em;
+}
+#write th {
+  background: #1a7a6a;
+  color: #ffffff;
+  padding: 10px 8px;
+  font-weight: bold;
+  text-align: left;
+  border: 1px solid #cccccc;
+}
+#write td {
+  background: #ffffff;
+  color: #333333;
+  padding: 8px;
+  border: 1px solid #cccccc;
+}
+#write tr:nth-child(even) td {
+  background: #f8fafa;
+}
+#write td code {
+  background-color: #edf2f0;
+  color: #c7254e;
+  font-weight: 500;
+  font-size: 0.9em;
+}
+
+@media (prefers-color-scheme: dark) {
+  #write table {
+    border-color: #444444;
+    background: #1e1e1e;
+  }
+  #write th {
+    background: #1a7a6a;
+    color: #ffffff;
+    border-color: #444444;
+  }
+  #write td {
+    background: #1e1e1e;
+    color: #d0d0d0;
+    border-color: #444444;
+  }
+  #write tr:nth-child(even) td {
+    background: #252525;
+  }
+  #write td code {
+    background-color: #2d2d2d;
+    color: #e89191;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第八部分: 代码块 / 围栏代码
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* 代码块背景 */
+.md-fences {
+  background-color: var(--code-background);
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  margin: 1em 0;
+  padding: 0;
+  font-size: 0.9em;
+  -webkit-font-smoothing: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  .md-fences {
+    border-color: #444444;
+  }
+}
+
+/* 代码块内字体 */
+.CodeMirror,
+.CodeMirror pre {
+  font-family: var(--monospace);
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+
+/* ---- 语法高亮 Token 颜色 (Light) ---- */
+
+/* 注释 */
+.cm-s-inner .cm-comment {
+  color: #6a8a6a;
+  font-style: italic;
+}
+
+/* 关键字 */
+.cm-s-inner .cm-keyword {
+  color: #1a5a9a;
+  font-weight: bold;
+}
+
+/* 字符串 */
+.cm-s-inner .cm-string {
+  color: #8a3a0a;
+}
+
+/* 数字 */
+.cm-s-inner .cm-number {
+  color: #1a6a4a;
+}
+
+/* 运算符 */
+.cm-s-inner .cm-operator {
+  color: #3a4a3a;
+}
+
+/* 变量 / 属性 */
+.cm-s-inner .cm-variable,
+.cm-s-inner .cm-property {
+  color: #8a2a5a;
+}
+
+/* 函数 / 方法 */
+.cm-s-inner .cm-def,
+.cm-s-inner .cm-variable-2 {
+  color: #5a3a8a;
+}
+
+/* 类型 / 类名 */
+.cm-s-inner .cm-type,
+.cm-s-inner .cm-variable-3 {
+  color: #2a6a5a;
+}
+
+/* 标签 / 属性 */
+.cm-s-inner .cm-tag,
+.cm-s-inner .cm-attribute {
+  color: #8a2a5a;
+}
+
+/* 内置常量 */
+.cm-s-inner .cm-atom,
+.cm-s-inner .cm-bracket {
+  color: #1a5a9a;
+}
+
+/* 元数据 */
+.cm-s-inner .cm-meta {
+  color: #6a5a8a;
+}
+
+/* 限定符 / 内置函数 */
+.cm-s-inner .cm-qualifier,
+.cm-s-inner .cm-builtin {
+  color: #4a6a8a;
+}
+
+/* 加粗 / 斜体 */
+.cm-s-inner .cm-strong { font-weight: bold; }
+.cm-s-inner .cm-em { font-style: italic; }
+.cm-s-inner .cm-link { text-decoration: underline; }
+
+/* 所选行高亮（透明 = 不显示默认行选中背景） */
+.cm-s-inner .CodeMirror-activeline-background {
+  background: transparent !important;
+}
+
+/* ---- Dark 模式语法高亮 ---- */
+@media (prefers-color-scheme: dark) {
+  .cm-s-inner .cm-comment { color: #7aaa7a; }
+  .cm-s-inner .cm-keyword { color: #6ab0f0; }
+  .cm-s-inner .cm-string { color: #d08a5a; }
+  .cm-s-inner .cm-number { color: #7ac08a; }
+  .cm-s-inner .cm-operator { color: #9aaa8a; }
+  .cm-s-inner .cm-variable,
+  .cm-s-inner .cm-property { color: #e090b0; }
+  .cm-s-inner .cm-def,
+  .cm-s-inner .cm-variable-2 { color: #b08ae0; }
+  .cm-s-inner .cm-type,
+  .cm-s-inner .cm-variable-3 { color: #8ac0b0; }
+  .cm-s-inner .cm-tag,
+  .cm-s-inner .cm-attribute { color: #e090b0; }
+  .cm-s-inner .cm-atom,
+  .cm-s-inner .cm-bracket { color: #7ab0e0; }
+  .cm-s-inner .cm-meta { color: #b0a0d0; }
+  .cm-s-inner .cm-qualifier,
+  .cm-s-inner .cm-builtin { color: #8ab0d0; }
+  .cm-s-inner .CodeMirror-activeline-background { background: transparent !important; }
+}
+
+/* 代码块右上角语言标签 */
+.md-fences::before {
+  content: attr(lang);
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.75em;
+  color: #888;
+  text-align: right;
+  padding: 4px 10px 0 0;
+  opacity: 0.6;
+}
+
+/* 代码块中的图片限制 */
+.cm-s-inner img {
+  max-width: initial !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第九部分: 分割线与水平线
+   ═══════════════════════════════════════════════════════════════════════ */
+
+#write hr {
+  border: none;
+  border-top: 2px solid #dde4e2;
+  margin: 1.5em 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  #write hr {
+    border-top-color: #333333;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第十部分: 图片
+   ═══════════════════════════════════════════════════════════════════════ */
+
+#write img {
+  max-width: 100%;
+  max-height: 80vh;
+  height: auto;
+  object-fit: contain;
+}
+
+/* 图片居中 */
+.md-image {
+  display: block;
+  text-align: center;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第十一部分: 任务列表 (Checklist)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+#write input[type="checkbox"] {
+  accent-color: #1a7a6a;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第十二部分: 侧边栏 / 文件列表
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* 侧边栏背景 */
+.sidebar-content,
+.sidebar-content-content {
+  background-color: var(--side-bar-bg-color);
+  color: var(--side-bar-text-color);
+}
+
+/* 文件列表项 */
+#typora-sidebar .file-list-item {
+  border-bottom: 1px solid var(--window-border);
+  transition: background-color 0.15s;
+}
+#typora-sidebar .file-list-item:hover {
+  background-color: var(--item-hover-bg-color);
+}
+#typora-sidebar .file-list-item.active {
+  background-color: var(--active-file-bg-color);
+  border-left: 3px solid var(--active-file-border-color);
+}
+#typora-sidebar .file-list-item-file-name {
+  font-family: var(--font-body);
+  font-size: 0.95em;
+}
+
+/* 大纲 */
+.outline-content {
+  background-color: var(--side-bar-bg-color);
+  color: var(--side-bar-text-color);
+}
+.outline-item {
+  padding: 4px 12px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+.outline-item:hover {
+  background-color: var(--outline-item-hover);
+}
+.outline-label {
+  color: var(--side-bar-text-color);
+}
+.outline-item-active {
+  background-color: var(--outline-item-hover) !important;
+}
+.outline-item-active .outline-label {
+  color: var(--outline-item-active);
+  font-weight: 500;
+}
+
+/* 侧边栏搜索框 */
+#typora-sidebar input {
+  font-family: var(--font-body);
+}
+#typora-sidebar .search-input {
+  border: 1px solid var(--window-border);
+  border-radius: 4px;
+}
+#typora-sidebar .search-result-file-match {
+  background-color: var(--search-select-bg-color);
+  color: var(--search-select-text-color);
+}
+
+/* 侧边栏切换按钮 */
+.sidebar-tab-btn {
+  color: var(--side-bar-text-color);
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+.sidebar-tab-btn:hover {
+  opacity: 1;
+}
+.sidebar-tab-btn.active {
+  opacity: 1;
+  color: var(--outline-item-active);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第十三部分: 源码模式 (Source Code Mode)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.cm-s-typora-default .cm-header {
+  font-family: var(--font-heading);
+  font-weight: bold;
+}
+.cm-s-typora-default .cm-header-1 { color: #ffffff; font-size: 1.25em; }
+.cm-s-typora-default .cm-header-2 { color: #1a7a6a; font-size: 1.2em; }
+.cm-s-typora-default .cm-header-3 { color: #2d8a6e; }
+.cm-s-typora-default .cm-header-4 { color: #3d9a78; }
+.cm-s-typora-default .cm-header-5 { color: #50aa88; }
+.cm-s-typora-default .cm-header-6 { color: #6aba9c; }
+
+@media (prefers-color-scheme: dark) {
+  .cm-s-typora-default .cm-header-1 { color: #f0f0f0; }
+  .cm-s-typora-default .cm-header-2 { color: #4db89a; }
+  .cm-s-typora-default .cm-header-3 { color: #63c8aa; }
+  .cm-s-typora-default .cm-header-4 { color: #7dd8ba; }
+  .cm-s-typora-default .cm-header-5 { color: #98e5cc; }
+  .cm-s-typora-default .cm-header-6 { color: #b0f0e0; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第十四部分: 页脚 / 字数统计
+   ═══════════════════════════════════════════════════════════════════════ */
+
+footer {
+  font-size: 0.8em;
+  color: #888;
+}
+
+@media (prefers-color-scheme: dark) {
+  footer {
+    color: #666;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第十五部分: YAML 前置元数据 (Frontmatter)
+   — 文档开头的 --- 属性块，默认折叠隐藏，悬停显示
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ✅ 正确选择器: pre.md-meta-block（Typora 内置的标准 frontmatter 类）
+ *   不是 .md-meta！后者是行内格式标记（如 ** 加粗语法）的类。
+ *   参考 Typora 内置主题 (github.css, gothic.css) 一致使用此选择器。
+ */
+#write pre.md-meta-block {
+  max-height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  pointer-events: none;
+  transition: max-height 0.25s ease, opacity 0.25s ease, padding 0.25s ease, margin 0.25s ease;
+}
+
+/* 悬停时完全展开 */
+#write pre.md-meta-block:hover {
+  max-height: 800px !important;
+  opacity: 1 !important;
+  margin: 0.5em 0 !important;
+  padding: 0.8em 1em !important;
+  border-bottom: 1px solid #dde4e2 !important;
+  border-radius: 4px;
+  background: #f8fbfa !important;
+  font-family: var(--monospace);
+  font-size: 0.85em;
+  line-height: 1.5;
+  color: #888;
+  pointer-events: auto;
+}
+
+/* 编辑时（光标定位在 frontmatter 内）始终显示 */
+#write pre.md-meta-block.md-focus {
+  max-height: 800px !important;
+  opacity: 1 !important;
+  margin: 0.5em 0 !important;
+  padding: 0.8em 1em !important;
+  border-bottom: 1px solid #dde4e2 !important;
+  border-radius: 4px;
+  background: #f8fbfa !important;
+  font-family: var(--monospace);
+  font-size: 0.85em;
+  line-height: 1.5;
+  color: #888;
+}
+
+/* Dark 模式 */
+@media (prefers-color-scheme: dark) {
+  #write pre.md-meta-block:hover,
+  #write pre.md-meta-block.md-focus {
+    border-bottom-color: #333 !important;
+    background: #1a1f1e !important;
+    color: #aaa;
+  }
+}
+
+/* 打印时始终显示 frontmatter */
+@media print {
+  #write pre.md-meta-block {
+    max-height: none !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+    margin: 0.5em 0 !important;
+    padding: 0.8em 1em !important;
+    border-bottom: 1px solid #ccc !important;
+    color: #555 !important;
+    pointer-events: auto;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   第十六部分: 打印模式
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media print {
+  :root {
+    --bg-color: #ffffff;
+    --text-color: #1a1a1a;
+    --code-background: #f5f6f8;
+    --code-comment: #5a7a5a;
+    --code-keyword: #1a5a9a;
+    --code-string: #2a5a8a;
+    --code-function: #5a3a8a;
+    --code-operator: #4a4a2a;
+    --code-value: #8a2a5a;
+  }
+
+  body {
+    font-family: "Times New Roman", "Songti SC", "STSong", "SimSun", "宋体", serif;
+    color: #1a1a1a;
+    background: #ffffff;
+  }
+
+  #write {
+    max-width: 100%;
+    padding: 0;
+    color: #1a1a1a;
+  }
+
+  /* 标题用无衬线 */
+  #write h1, #write h2, #write h3 {
+    font-family: "Avenir Next", "Heiti SC", "STHeiti", "SimHei", "黑体", sans-serif;
+  }
+  #write h1 {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  #write h1::after {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  #write h2::after {
+    background-color: #f2c94c;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* 代码块 */
+  .md-fences {
+    background: var(--code-background) !important;
+    border-color: #cccccc;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  code {
+    background: var(--code-background) !important;
+    color: #1a1a1a !important;
+  }
+
+  /* 引用块打印简洁化 */
+  #write blockquote {
+    background: none;
+    border-left: 3px solid #1a7a6a;
+    color: #333333;
+  }
+
+  /* 表格 */
+  #write table, #write th, #write td {
+    border-color: #888888;
+  }
+  #write td {
+    background: #ffffff;
+    color: #1a1a1a;
+  }
+  #write th {
+    background: #1a7a6a;
+    color: #ffffff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* 链接不打印下划线 */
+  #write a {
+    text-decoration: none;
+    color: #1a7a6a;
+  }
+
+  /* 隐藏侧边栏 */
+  #typora-sidebar {
+    display: none !important;
+  }
+
+  /* 隐藏页脚 */
+  footer {
+    display: none;
+  }
+}
